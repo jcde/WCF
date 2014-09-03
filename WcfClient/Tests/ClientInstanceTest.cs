@@ -1,6 +1,8 @@
 ﻿#if UNIT_TESTS
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WcfClient.Properties;
+using Test = Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute;
+using TestFixture = Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute;
 
 namespace WcfClient.Tests
 {
