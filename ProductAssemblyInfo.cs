@@ -13,7 +13,3 @@ using System.Reflection;
 [assembly: AssemblyProduct("WCF.Libraries")]
 [assembly: AssemblyVersionAttribute("0.1.0.0")]
 [assembly: AssemblyFileVersionAttribute("0.1.0.0")]
-#if !UNIT_TESTS
-[assembly: AssemblyDelaySignAttribute(true)]
-[assembly: AssemblyKeyFileAttribute(@"..\..\..\..\..\..\Configuration\Keys\numsite.snk ")]
-#endif
