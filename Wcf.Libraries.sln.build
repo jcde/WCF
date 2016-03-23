@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project default="release">
-	<property name="AssemblyCompany" value="NumSite" />
-	<property name="AssemblyCopyright" value="Copyright � 2014 NumSite" />
+	<property name="AssemblyCompany" value="" />
+	<property name="AssemblyCopyright" value="" />
 
 	<include buildfile="${environment::get-variable('currentDeploy')}" />
 
