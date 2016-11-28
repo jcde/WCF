@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Security.Permissions;
 using System.Security.Principal;
 using System.ServiceModel;
+using System.ServiceModel.Description;
 using ServiceModelEx;
 using WcfDomain.Contracts;
 using WcfDomain.Contracts.Security;
@@ -91,9 +92,10 @@ namespace WcfServer
                 string[] slashes = action.Split('/');
                 string methodName = slashes[slashes.Length - 1];
                 string contractName = slashes[slashes.Length - 2];
-                Dictionary<string, MethodInfo> meths = MethodsManager.GetMethods(contractName);
+                /*was in 1.0.0.0 Dictionary<string, MethodInfo> meths = MethodsManager.GetMethods(contractName);
                 if (meths != null && meths.ContainsKey(methodName))
-                    return meths[methodName];
+                    return meths[methodName];*/
+                return new ContractDescription(contractName).Operations.Find(methodName).BeginMethod;
             }
             return null;
         }
@@ -108,7 +110,7 @@ namespace WcfServer
                 string action = OperationContext.Current.IncomingMessageHeaders.Action;
                 string[] slashes = action.Split('/');
                 string contractName = slashes[slashes.Length - 2];
-                return MethodsManager.GetContract(contractName);
+                return new ContractDescription(contractName).ContractType;
             }
             return null;
         }

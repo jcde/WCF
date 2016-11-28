@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
 <product name="Wcf.Libraries" major="0" minor="1" build="0" revision="0">
-  <usesProduct name="Microsoft .Net Framework" major="3" minor="5" />
+  <usesProduct name="Microsoft .Net Framework" major="4" minor="0" />
 </product>

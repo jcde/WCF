@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
-using Microsoft.Practices.EnterpriseLibrary.Logging;
+using AppConfiguration;
 using WcfDomain.Contracts;
 using WcfServer.Services;
 
@@ -70,7 +70,7 @@ namespace WcfServer.ErrorsHandling
 
         private void LogError(Exception e)
         {
-            Logger.Write(e);
+            Log.Default.Error(e);
             BroadcastError(e as FaultException ?? new FaultException(e.ToString()));
         }
 
@@ -97,7 +97,7 @@ namespace WcfServer.ErrorsHandling
                 }
                 catch (Exception ex)
                 {
-                    Logger.Write(ex);
+                    Log.Default.Error(ex);
                 }
             }
         }

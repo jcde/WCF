@@ -25,7 +25,7 @@ namespace WcfServer.ErrorsHandling
             _errorHandler = new ErrorHandler<T>();
 
             // creates cache with methods of contract t
-            MethodsManager.GetMethods(typeof (MT));
+            //does not work on 3.0.0.0 MethodsManager.GetMethods(typeof (MT));
         }
 
         #region IServiceBehavior Members

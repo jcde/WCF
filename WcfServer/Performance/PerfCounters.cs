@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security;
 using System.Threading;
-using Microsoft.Practices.EnterpriseLibrary.Logging;
+using AppConfiguration;
 using WcfServer.Properties;
 
 namespace WcfServer.Performance
@@ -114,11 +114,7 @@ namespace WcfServer.Performance
                                     }
                                     catch (SecurityException ex)
                                     {
-                                        Logger.Write(new LogEntry
-                                                         {
-                                                             Message = ex.Message,
-                                                             Severity = TraceEventType.Verbose,
-                                                         });
+                                        Log.Default.Error(ex);
                                         return;
                                     }
                                 }
@@ -217,11 +213,7 @@ namespace WcfServer.Performance
             }
             catch (Exception ex)
             {
-                Logger.Write(new LogEntry
-                                 {
-                                     Message = ex.Message,
-                                     Severity = TraceEventType.Verbose,
-                                 });
+                Log.Default.Error(ex);
             }
             return 0;
         }
@@ -245,11 +237,7 @@ namespace WcfServer.Performance
             }
             catch (Exception ex)
             {
-                Logger.Write(new LogEntry
-                                 {
-                                     Message = ex.Message,
-                                     Severity = TraceEventType.Verbose,
-                                 });
+                Log.Default.Error(ex);
             }
         }
 

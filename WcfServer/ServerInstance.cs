@@ -5,8 +5,9 @@ using System.IdentityModel.Policy;
 using System.ServiceModel;
 using System.ServiceModel.Description;
 using System.Threading;
+using AppConfiguration;
 using AppConfiguration.Localization;
-using Microsoft.Practices.EnterpriseLibrary.Logging;
+using NLog;
 using WcfDomain.Contracts;
 using WcfServer.Services;
 using Settings = WcfServer.Properties.Settings;
@@ -60,12 +61,11 @@ namespace WcfServer
                 //    therefore it can be used during other service construction
                 serviceHostBroadCast.Open();
                 StartedWithoutErrors = true;
-                Logger.Write(string.Format("Wcf server at port {0} started successfully",
-                                           _service.ServerListenPort));
+                Log.Default.Info("Wcf server at port {0} started successfully", _service.ServerListenPort);
             }
             catch (Exception commProblem)
             {
-                Logger.Write(commProblem.Message, "ErrorServerOpen");
+                Log.Default.Info(commProblem.Message, "ErrorServerOpen");
             }
         }
 
@@ -140,7 +140,7 @@ namespace WcfServer
 
         private static void service_UnknownMessageReceived(object sender, UnknownMessageReceivedEventArgs e)
         {
-            Logger.Write(e.Message.Headers[0], "ErrorServerUnknown");
+            Log.Default.Info(e.Message.Headers[0] + "ErrorServerUnknown");
         }
 
         private void Close()

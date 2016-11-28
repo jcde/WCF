@@ -17,8 +17,9 @@ namespace WcfDomain.Contracts.Tests
                 typeof (IChatsBroadCastContract).GetMethods(BindingFlags.Public | BindingFlags.FlattenHierarchy |
                                                             BindingFlags.Instance));
 
-            int mains = SubscriptionManager<IBroadCastContract>.GetMethods().Count;
-            int chatsWithMains = SubscriptionManager<IChatsBroadCastContract>.GetMethods().Count;
+            // no GetMethods in ServiceModelEx 3.0.0.0
+            int mains = SubscriptionManager<IBroadCastContract>.GetMethods().Length;
+            int chatsWithMains = SubscriptionManager<IChatsBroadCastContract>.GetMethods().Length;
 
             Assert.AreEqual(chatsWithMains - mains, meths.Count);
         }

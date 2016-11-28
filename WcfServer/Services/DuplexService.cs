@@ -9,7 +9,6 @@ using System.ServiceModel.Channels;
 using System.Threading;
 using AppConfiguration;
 using AppConfiguration.Localization;
-using Microsoft.Practices.EnterpriseLibrary.Logging;
 using ServiceModelEx;
 using WcfDomain.Contracts;
 using WcfDomain.Contracts.Clients;
@@ -145,12 +144,12 @@ namespace WcfServer.Services
                 {
                     if (HardReconnect)
                     {
-                        Logger.Write("Re-Connection by punting: " + connection.ClientUniqueKey);
+                        Log.Default.Info("Re-Connection by punting: " + connection.ClientUniqueKey);
                         PuntUser(connection, "Re-Connection");
                     }
                     else
                     {
-                        Logger.Write("Re-Connection attempt: " + connection.ClientUniqueKey);
+                        Log.Default.Info("Re-Connection attempt: " + connection.ClientUniqueKey);
                         Connection client = GetClient(connection.ClientUniqueKey, false);
                         if (client != null && OperationContext.Current != null)
                             client.ServerChannel = OperationContext.Current.Channel;
@@ -166,7 +165,7 @@ namespace WcfServer.Services
                         string fMsg = "You have reached the limit of " + LimitForClientType(connection.ClientType) +
                                       " for clients type " + @Enum.GetName(typeof (ClientType), connection.ClientType) +
                                       ".";
-                        Logger.Write(fMsg + Environment.NewLine + Environment.NewLine + connection.ClientUniqueKey);
+                        Log.Default.Info(fMsg + Environment.NewLine + Environment.NewLine + connection.ClientUniqueKey);
                         return fMsg;
                     }
                 }
@@ -174,7 +173,7 @@ namespace WcfServer.Services
                 {
                     string fMsg = "Client type of " + @Enum.GetName(typeof (ClientType), connection.ClientType) +
                                   " is not allowed by the current server settings.";
-                    Logger.Write(fMsg + Environment.NewLine + Environment.NewLine + connection.ClientUniqueKey);
+                    Log.Default.Info(fMsg + Environment.NewLine + Environment.NewLine + connection.ClientUniqueKey);
                     return fMsg;
                 }
 
@@ -201,8 +200,7 @@ namespace WcfServer.Services
                         {
                             Thread.CurrentThread.CurrentCulture =
                                 new CultureInfo(Config.DefaultLanguage);
-                            Logger.Write(string.Format("{0} connection faulted, therefore it is being disconnected",
-                                                       connection));
+                            Log.Default.Info("{0} connection faulted, therefore it is being disconnected", connection);
                             PuntUser(connection, "client application faulted", false);
                         };
                 OperationContext.Current.Channel.Closed +=
@@ -212,13 +210,13 @@ namespace WcfServer.Services
                             {
                                 Thread.CurrentThread.CurrentCulture =
                                     new CultureInfo(Config.DefaultLanguage);
-                                Logger.Write(string.Format("{0} connection closed, therefore it is being disconnected",
+                                Log.Default.Info(string.Format("{0} connection closed, therefore it is being disconnected",
                                                            connection));
                                 PuntUser(connection, "client application closed", false);
                             }
                         };
 
-                Logger.Write(string.Format("Client connected [{0}]", connection.ClientUniqueKey));
+                Log.Default.Info(string.Format("Client connected [{0}]", connection.ClientUniqueKey));
 
                 ConnectNotify(connection, false);
                 PerfCounters.Count(PerfCounters.Connections, Clients.Count);
@@ -242,7 +240,7 @@ namespace WcfServer.Services
                             }
                             catch (SystemException ex)
                             {
-                                Logger.Write(ex);
+                                Log.Default.Error(ex);
                             }
                         });
                 OnConnectNotifyAfter(connection);
@@ -364,7 +362,7 @@ namespace WcfServer.Services
                 }
                 catch (Exception ex)
                 {
-                    Logger.Write(ex);
+                    Log.Default.Error(ex);
                 }
 
                 //don't zero c.ServerChannel = null; 
@@ -382,7 +380,7 @@ namespace WcfServer.Services
                 }
                 catch (Exception ex)
                 {
-                    Logger.Write(ex);
+                    Log.Default.Error(ex);
                 }
             }
         }
@@ -437,7 +435,7 @@ namespace WcfServer.Services
                 //      but it can continue to work 
                 Channels.CloseChannel(ref cC);
             }
-            Unsubscribe(null, (T) disconnected.ServerChannel);
+            //was Unsubscribe(null, (T) disconnected.ServerChannel); in 1.0.0.0
         }
 
         /// <summary>
@@ -472,7 +470,7 @@ namespace WcfServer.Services
                 }
                 catch (Exception ex)
                 {
-                    Logger.Write(ex);
+                    Log.Default.Error(ex);
                 }
             }
             DisconnectNotify(null, Sender != null ? Sender.ClientUniqueKey : null,
@@ -485,7 +483,7 @@ namespace WcfServer.Services
                 }
                 catch (Exception ex)
                 {
-                    Logger.Write(ex);
+                    Log.Default.Error(ex);
                 }
             }
         }
@@ -643,7 +641,7 @@ namespace WcfServer.Services
                     if (Sender != null)
                         s += string.Format(" Client: {0}({1})",
                                            Sender.ClientUniqueKey, Sender.IP);
-                    Logger.Write(s, "Server Log");
+                    Log.Default.Info(s, "Server Log");
                     break;
                 case GeneralCommandType.Ping:
                     if (Sender != null)

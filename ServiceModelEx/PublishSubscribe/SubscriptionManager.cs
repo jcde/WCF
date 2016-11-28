@@ -86,8 +86,15 @@ namespace ServiceModelEx
          Debug.Assert(false,"Unsupported binding specified");
          return null;
       }
-      static string[] GetOperations()
-      {
+
+       public static string[] GetMethods()
+       {
+            MethodInfo[] methods = typeof(T).GetMethods(BindingFlags.Public | BindingFlags.FlattenHierarchy | BindingFlags.Instance);
+            return GetOperations();
+       }
+
+       public static string[] GetOperations()
+       {
          MethodInfo[] methods = typeof(T).GetMethods(BindingFlags.Public|BindingFlags.FlattenHierarchy|BindingFlags.Instance);
          List<string> operations = new List<string>(methods.Length);
 
